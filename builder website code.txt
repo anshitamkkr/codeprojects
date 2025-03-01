@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Build your perfect website with our responsive website builder. Choose from popular templates like Amazon-style layouts and optimize for SEO.">
+    <title>Responsive Website Builder | Create Professional Sites</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            position: relative;
+        }
+
+        .template-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            padding: 2rem;
+        }
+
+        .template-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .template-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .preview-section {
+            padding: 2rem;
+            background: #f9f9f9;
+            min-height: 500px;
+        }
+
+        .ad-banner {
+            background: #f8f9fa;
+            padding: 1rem;
+            text-align: center;
+            margin: 1rem 0;
+        }
+
+        .builder-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2rem;
+        }
+
+        .sidebar {
+            background: #fff;
+            padding: 1rem;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+
+        .responsive-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            min-height: 600px;
+        }
+
+        @media (max-width: 768px) {
+            .builder-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+        }
+
+        /* Add more responsive styles as needed */
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Website Builder Pro</h1>
+        <!-- AdSense Header -->
+        <div class="ad-banner" id="header-ad">
+            <!-- Google AdSense Code -->
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+                    crossorigin="anonymous"></script>
+            <!-- Header Ad Unit -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                 data-ad-slot="XXXXXXXXXX"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+    </header>
+
+    <main class="builder-container">
+        <aside class="sidebar">
+            <h3>Templates</h3>
+            <div class="template-selector">
+                <div class="template-card" onclick="loadTemplate('ecommerce')">
+                    <img src="amazon-template.jpg" alt="E-commerce Template" style="width:100%">
+                    <div class="template-info">
+                        <h4>E-commerce (Amazon Style)</h4>
+                        <p>Responsive online store template</p>
+                    </div>
+                </div>
+                <!-- Add more templates -->
+            </div>
+        </aside>
+
+        <section class="preview-section">
+            <div id="website-preview">
+                <!-- Dynamic content loads here -->
+                <iframe class="responsive-iframe" id="live-preview"></iframe>
+            </div>
+            <!-- In-Content Ad -->
+            <div class="ad-banner" id="mid-content-ad">
+                <!-- AdSense code same structure as header -->
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Template configuration
+        const templates = {
+            ecommerce: {
+                name: "E-commerce",
+                html: `<!DOCTYPE html>
+                <html>
+                <head>
+                    <title>E-commerce Template</title>
+                    <!-- SEO Meta Tags -->
+                    <meta name="description" content="Professional E-commerce Template">
+                </head>
+                <body>
+                    <!-- Template structure -->
+                    <header>...</header>
+                    <main>...</main>
+                    <footer>...</footer>
+                </body>
+                </html>`
+            }
+        };
+
+        function loadTemplate(templateId) {
+            const preview = document.getElementById('live-preview');
+            const templateContent = templates[templateId].html;
+            preview.srcdoc = templateContent;
+        }
+
+        // AdSense configuration
+        function configureAds(adUnitIds) {
+            const ads = document.querySelectorAll('.ad-banner');
+            ads.forEach((ad, index) => {
+                ad.innerHTML = `
+                    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adUnitIds.client}"
+                    crossorigin="anonymous"><\/script>
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="${adUnitIds.client}"
+                         data-ad-slot="${adUnitIds.slots[index]}"
+                         data-ad-format="auto"
+                         data-full-width-responsive="true"><\/ins>
+                    <script>
+                         (adsbygoogle = window.adsbygoogle || []).push({});
+                    <\/script>`;
+            });
+        }
+    </script>
+
+    <!-- SEO Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": "Website Builder Pro",
+        "description": "Professional responsive website builder tool",
+        "keywords": "website builder, responsive design, SEO optimization"
+    }
+    </script>
+</body>
+</html>
