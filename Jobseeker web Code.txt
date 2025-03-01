@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Find your dream job or hire perfect candidates | Job Portal">
+    <title>Job Portal - Connect Employers & Job Seekers</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: #004a7c;
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        /* Navigation */
+        .nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Search Section */
+        .search-section {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .search-input {
+            width: 60%;
+            padding: 1rem;
+            border: 2px solid #004a7c;
+            border-radius: 5px;
+        }
+
+        /* Job Listings */
+        .job-listings {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .job-card {
+            border: 1px solid #ddd;
+            padding: 1rem;
+            border-radius: 5px;
+            transition: transform 0.3s;
+        }
+
+        .job-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Ads Section */
+        .ad-unit {
+            margin: 2rem 0;
+            text-align: center;
+            background: #f5f5f5;
+            padding: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav {
+                display: none;
+            }
+
+            .search-input {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Google Ads Header -->
+    <div class="ad-unit">
+        <!-- Insert Google AdSense code here -->
+        <!-- Ad Unit ID: EXAMPLE_AD_ID -->
+    </div>
+
+    <header class="header">
+        <div class="logo">JobPortal</div>
+        <nav class="nav">
+            <a href="#jobs" class="nav-link">Jobs</a>
+            <a href="#employers" class="nav-link">Employers</a>
+            <a href="#login" class="nav-link">Login</a>
+            <a href="#register" class="nav-link">Register</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <!-- Search Section -->
+        <section class="search-section">
+            <input type="text" class="search-input" placeholder="Search jobs by skills, company, or location">
+            <button onclick="searchJobs()" class="search-btn">Search</button>
+        </section>
+
+        <!-- Job Listings -->
+        <section class="job-listings" id="jobListings">
+            <!-- Dynamic content loaded from JS -->
+        </section>
+
+        <!-- Ad Section -->
+        <div class="ad-unit">
+            <!-- Insert Google AdSense code here -->
+            <!-- Ad Unit ID: EXAMPLE_AD_ID -->
+        </div>
+
+        <!-- Employer Section -->
+        <section class="employer-section">
+            <h2>For Employers</h2>
+            <button onclick="showPostJobForm()">Post Job</button>
+            <div id="postJobForm" style="display: none;">
+                <!-- Job Post Form -->
+                <form onsubmit="postJob(event)">
+                    <input type="text" id="jobTitle" placeholder="Job Title" required>
+                    <input type="text" id="company" placeholder="Company" required>
+                    <input type="text" id="location" placeholder="Location" required>
+                    <textarea id="description" placeholder="Job Description" required></textarea>
+                    <button type="submit">Post Job</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Sample initial jobs data
+        let jobs = [
+            {
+                title: "Frontend Developer",
+                company: "Tech Corp",
+                location: "Remote",
+                description: "Looking for experienced React developers"
+            },
+            {
+                title: "UX Designer",
+                company: "Design Studio",
+                location: "New York",
+                description: "Senior designer needed for enterprise projects"
+            }
+        ];
+
+        // Display jobs
+        function renderJobs() {
+            const container = document.getElementById('jobListings');
+            container.innerHTML = jobs.map(job => `
+                <div class="job-card">
+                    <h3>${job.title}</h3>
+                    <p>${job.company}</p>
+                    <p>${job.location}</p>
+                    <p>${job.description}</p>
+                    <button onclick="applyForJob('${job.title}')">Apply Now</button>
+                </div>
+            `).join('');
+        }
+
+        // Job Search Functionality
+        function searchJobs() {
+            const searchTerm = document.querySelector('.search-input').value.toLowerCase();
+            const filteredJobs = jobs.filter(job => 
+                job.title.toLowerCase().includes(searchTerm) ||
+                job.company.toLowerCase().includes(searchTerm) ||
+                job.location.toLowerCase().includes(searchTerm)
+            );
+            jobs = filteredJobs;
+            renderJobs();
+        }
+
+        // Post Job Functionality
+        function showPostJobForm() {
+            document.getElementById('postJobForm').style.display = 'block';
+        }
+
+        function postJob(event) {
+            event.preventDefault();
+            const newJob = {
+                title: document.getElementById('jobTitle').value,
+                company: document.getElementById('company').value,
+                location: document.getElementById('location').value,
+                description: document.getElementById('description').value
+            };
+            jobs.push(newJob);
+            renderJobs();
+            event.target.reset();
+        }
+
+        // Initial render
+        renderJobs();
+    </script>
+
+    <!-- SEO Optimization -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "JobPortal",
+        "url": "https://yourdomain.com",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "{search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+
+    <!-- Google AdSense Code (Replace with actual code) -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+     crossorigin="anonymous"></script>
+</body>
+</html>

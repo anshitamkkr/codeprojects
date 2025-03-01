@@ -1,0 +1,167 @@
+from flask import Flask, render_template, request, jsonify
+import os
+
+app = Flask(__name__)
+UPLOAD_FOLDER = 'uploads'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file uploaded'}), 400
+
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': 'No file selected'}), 400
+
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+    file.save(file_path)
+
+    # Placeholder for 2D to 3D conversion logic
+    # Replace this with actual conversion logic
+    # For now, we'll just return a simple 3D model (cube) as JSON
+    model_data = {
+        'vertices': [
+            [-1, -1, -1], [1, -1, -1], [1, 1, -1], [-1, 1, -1],
+            [-1, -1, 1], [1, -1, 1], [1, 1, 1], [-1, 1, 1]
+        ],
+        'faces': [
+            [0, 1, 2], [2, 3, 0],  # Front face
+            [4, 5, 6], [6, 7, 4],  # Back face
+            [0, 4, 7], [7, 3, 0],  # Left face
+            [1, 5, 6], [6, 2, 1],  # Right face
+            [0, 1, 5], [5, 4, 0],  # Bottom face
+            [3, 2, 6], [6, 7, 3]   # Top face
+        ]
+    }
+
+    return jsonify(model_data)
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2D to 3D House Design Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        #canvas {
+            width: 80%;
+            height: 600px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+        }
+        #upload-section {
+            margin-top: 20px;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <h1>2D to 3D House Design Converter</h1>
+    <div id="canvas"></div>
+    <div id="upload-section">
+        <input type="file" id="file-input" accept="image/*">
+        <button onclick="uploadFile()">Upload and Convert</button>
+    </div>
+
+    <script>
+        let scene, camera, renderer;
+
+        function init() {
+            // Set up the scene
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth * 0.8, 600);
+            document.getElementById('canvas').appendChild(renderer.domElement);
+
+            // Add lighting
+            const light = new THREE.DirectionalLight(0xffffff, 1);
+            light.position.set(5, 5, 5).normalize();
+            scene.add(light);
+
+            // Position the camera
+            camera.position.z = 5;
+        }
+
+        function renderModel(modelData) {
+            // Clear previous model
+            while (scene.children.length > 0) {
+                scene.remove(scene.children[0]);
+            }
+
+            // Create geometry from model data
+            const geometry = new THREE.BufferGeometry();
+            const vertices = new Float32Array(modelData.vertices.flat());
+            const indices = new Uint32Array(modelData.faces.flat());
+
+            geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
+            geometry.setIndex(new THREE.BufferAttribute(indices, 1));
+
+            const material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
+            const mesh = new THREE.Mesh(geometry, material);
+            scene.add(mesh);
+
+            // Render the scene
+            function animate() {
+                requestAnimationFrame(animate);
+                mesh.rotation.x += 0.01;
+                mesh.rotation.y += 0.01;
+                renderer.render(scene, camera);
+            }
+            animate();
+        }
+
+        function uploadFile() {
+            const fileInput = document.getElementById('file-input');
+            const file = fileInput.files[0];
+            if (!file) {
+                alert('Please select a file.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    renderModel(data);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>

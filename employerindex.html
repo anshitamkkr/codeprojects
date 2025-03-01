@@ -1,0 +1,51 @@
+import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Select, SelectItem } from "@/components/ui/select";
+
+export default function JobPortal() {
+  const [jobs, setJobs] = useState([
+    { id: 1, title: "Software Engineer", company: "TechCorp", description: "Develop and maintain applications." },
+    { id: 2, title: "Electrical Engineer", company: "PowerGrid Inc.", description: "Work on power distribution systems." }
+  ]);
+  
+  const [userType, setUserType] = useState("jobseeker");
+  const [newJob, setNewJob] = useState({ title: "", company: "", description: "" });
+
+  const postJob = () => {
+    setJobs([...jobs, { id: jobs.length + 1, ...newJob }]);
+    setNewJob({ title: "", company: "", description: "" });
+  };
+
+  return (
+    <div className="p-6 space-y-4">
+      <Select onValueChange={setUserType} defaultValue="jobseeker">
+        <SelectItem value="jobseeker">Job Seeker</SelectItem>
+        <SelectItem value="employer">Employer</SelectItem>
+      </Select>
+
+      {userType === "employer" && (
+        <Card className="p-4 space-y-2">
+          <Input placeholder="Job Title" value={newJob.title} onChange={(e) => setNewJob({ ...newJob, title: e.target.value })} />
+          <Input placeholder="Company" value={newJob.company} onChange={(e) => setNewJob({ ...newJob, company: e.target.value })} />
+          <Input placeholder="Description" value={newJob.description} onChange={(e) => setNewJob({ ...newJob, description: e.target.value })} />
+          <Button onClick={postJob}>Post Job</Button>
+        </Card>
+      )}
+
+      <div className="grid gap-4">
+        {jobs.map((job) => (
+          <Card key={job.id}>
+            <CardContent>
+              <h3 className="text-lg font-bold">{job.title}</h3>
+              <p className="text-sm text-gray-600">{job.company}</p>
+              <p>{job.description}</p>
+              {userType === "jobseeker" && <Button>Apply</Button>}
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Managing Director Message</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+        }
+        .message {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+        .btn {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button class="btn" onclick="toggleMessage()">Click to View Thoughts</button>
+        <div class="message" id="mdMessage">
+            <h2>Managing Director Message</h2>
+            <p><strong>Dear Esteemed Visitors,</strong></p>
+            <p>Welcome to Infinite Prosperity – a sanctuary of boundless creativity, unwavering dedication, and limitless possibilities.</p>
+            <p>In our journey towards prosperity, we believe that every individual possesses the innate ability to unlock their fullest potential and achieve unprecedented success. At Infinite Prosperity, we strive to create an environment where dreams are nurtured, ideas flourish, and aspirations take flight.</p>
+            <p>Our relentless commitment to excellence drives us to constantly innovate and push the boundaries of creativity. With a team of passionate artisans and visionaries, we embark on a quest to redefine the very essence of prosperity in all its forms.</p>
+            <p>Here, you will find not just a website, but a gateway to a world where imagination knows no bounds and prosperity knows no limits. Whether you're seeking inspiration, exploring opportunities, or simply indulging in the beauty of design, Infinite Prosperity is your trusted companion on the path to greatness.</p>
+            <p>As the Managing Director of Infinite Prosperity, I am honored to lead this journey towards a future brimming with infinite possibilities. Together, let us sculpt a world where prosperity is not just a destination, but a way of life.</p>
+            <p>Thank you for joining us on this remarkable voyage. May your visit to Infinite Prosperity inspire you, uplift your spirits, and ignite the flame of boundless potential within you.</p>
+            <p><strong>With warm regards,</strong></p>
+            <p><strong>Anshita Makkar</strong><br>Managing Director, Infinite Prosperity</p>
+        </div>
+    </div>
+
+    <script>
+        function toggleMessage() {
+            var message = document.getElementById("mdMessage");
+            if (message.style.display === "none" || message.style.display === "") {
+                message.style.display = "block";
+            } else {
+                message.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
